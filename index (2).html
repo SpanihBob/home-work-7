@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Задание 1:  Реализовать класс, описывающий простой маркер. В классе  должны быть следующие компоненты:
+        -поле, которое хранит цвет маркера;
+        -поле, которое хранит количество чернил в маркере (в процентах);
+        -метод для печати (метод принимает строку и выводит текст соответствующим цветом; текст выводится до тех
+         пор, пока в маркере есть чернила; один не пробельный символ – это 0,5% чернил в маркере).
+    Реализовать класс, описывающий заправляющийся маркер, унаследовав его от простого маркера и добавив метод для 
+    заправки маркера.
+    Продемонстрировать работу написанных методов.     -->
+
+    <script>
+        document.writeln('задание 1 здесь + в консоли');
+        class Marker {
+            constructor (color, volume) {
+                this.color = color;                     // цвет
+                this.volume = volume;                   // количество чернил
+            }
+            print(string){                              //метод для печати
+                document.writeln('<p>');                                
+                let vol = this.volume;
+                let st = [];
+
+                for (let i = 0; i < string.length; i++) {
+                    if (string[i] != ' ') {                                                 //если i элемент строки не пробел
+                        vol = vol - .5;                                                     //уменьшаем обьем чернил на 0.5
+                    }
+                    if (vol != 0) {                                                         //пока обьем чернил != 0
+                        st[i] = string[i];                                                   //добавляем в массив переменной i элемент строки
+
+                    } else {console.log('заправьте маркер');                                //когда обьем чернил = 0, выдаем надпись 'заправьте маркер'                            
+                            break;
+                      }  
+                }
+                document.writeln('<span style="color: ' + this.color + '">' + st.join('') + '</span>');//выводим текст
+                document.writeln('</p>');
+                return this.volume = vol;
+        }}
+        let prt_1 = new Marker('red', 100);
+        let prt_2 = new Marker('green', 100);
+        let prt_3 = new Marker('blue', 100);
+        let str = 'Lorem ipsum dolor sit ametenetur laboriosam non reprehenderit tempora at, suscippora at, suscipit tempore dolor.Lorem ipsum diiolor sit ametenetur laboriosam non reprehenderit tempora at, suscippora at, suscipit tempore dolor.rr';
+        prt_1.print(str);
+        prt_2.print(str);
+        // console.log(prt_1.volume + '%');       //проверяем работу счетчика обьема чернил после вывода текста
+        // prt_1.print(str);
+        console.log('колличество чернил: ' + prt_1.volume + '%');
+
+        class RefuelingMarker extends Marker{                       //класс заправляющийся маркер
+            constructor(color,volume) {
+                super(color,volume);
+            }
+            fill() {
+                if (this.volume == 0) {
+                   let conf = confirm('заправить маркер?');
+                    if (conf == true) { 
+                        return this.volume = 100;
+                    }
+                }
+            }
+        }
+        let fill_1 = new RefuelingMarker('red', 0);  //проверяем работу заправляющегося маркера
+        fill_1.fill();
+
+        console.log('колличество чернил: ' + fill_1.volume + '%');
+
+    </script>
+
+    
+    <!-- Задание 2
+    Реализуйте класс ExtendedDate, унаследовав его от стандартного класса Date и добавив следующие возможности:
+    -метод для вывода даты (числа и месяца) текстом;   
+    -метод для проверки – это прошедшая дата или будущая (если прошедшая, то метод возвращает false; если будущая 
+     или текущая, то true);
+    -метод для проверки – високосный год или нет;
+    -метод, возвращающий следующую дату.
+    Создайте объект класса ExtendedDate и выведите на экран результаты работы новых методов. -->
+
+    <script>
+        document.writeln('задание 2 - в консоли');
+        document.writeln('<br>');
+
+        class ExtendedDate extends Date {
+            constructor(value) {
+                super();
+                this.value= value;
+            }
+
+            //метод для вывода даты (числа и месяца) текстом
+            dateDisplayInText() {
+                const day = ['','первое', 'второе', 'третье', 'четвертое','пятое', 'шестое', 'седьмое', 'восьмое', 'девятое', 'десятое', 'одиннадцатое', 'двенадцатое', 'тринадцатое', 'четырнадцатое', 'пятнадцатое', 'шестнадцатое', 'семнадцатое', 'восемнадцатое', 'девятнадцатое', 'двадцатое', 'двадцать первое', 'двадцать второе', 'двадцать третье', 'двадцать четвертое', 'двадцать пятое', 'двадцать шестое', 'двадцать седьмое', 'двадцать восьмое', 'двадцать девятое','тридцатое', 'тридцать первое'];
+                const month = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+                let dt = new Date(this.value);
+                let get_d = dt.getDate();                       //возвращаем день
+                let get_m = dt.getMonth();                      //возвращаем месяц
+                console.log('выводим текстом дату: ' + day[get_d] + ' ' + month[get_m]);   //выводим текстом дату
+                console.log('выводим дату: ' + this.value);
+                console.log('');
+            }
+
+            //метод для проверки – это прошедшая дата или будущая (если прошедшая, то метод возвращает false; если будущая или текущая, то true)
+            pastOrFutureDate() {
+                let current_date = new Date();                  //переменная с текущей датой
+                let year_now = current_date.getFullYear();
+                let month_now = current_date.getMonth();
+                let date_now = current_date.getDate();
+                console.log('сегодняшняя дата: ' + year_now + '-' + +(month_now + 1) + '-' + date_now);
+
+                let dt = new Date(this.value);                  //заводим переменную с датой которую мы проверяем 
+                let get_d = dt.getDate();                       //возвращаем день
+                let get_m = dt.getMonth();                      //возвращаем месяц
+                let get_y = dt.getFullYear();                   //возвращаем год
+                console.log('введенная дата: ' + get_y + '-' + +(get_m + 1) + '-' + get_d);
+
+                if (get_y < year_now) return false;
+                else if (get_y > year_now) return true;
+                else if (get_y == year_now){
+                    if (get_m < month_now) return false;
+                    else if (get_m > month_now) return true;
+                    else if (get_m == month_now) {
+                        if (get_d < date_now) return false;
+                        else return true;
+                    }
+                }                
+            }
+
+            //метод для проверки – високосный год или нет
+            leapYear() {
+                let dt = new Date(this.value);
+                let get_y = dt.getFullYear();
+                if ((get_y % 4 == 0) && (get_y % 100 != 0) || (get_y % 400 == 0)) return (this.value + ' - високосный год');
+                else return (this.value + ' - не високосный год');
+            }
+
+            //метод, возвращающий следующую дату
+            nextDate() {
+                let new_dt = Date.parse(this.value) + 86400000; //24*60*60*1000 + введенная дата (переводим дату в миллисекунды и прибавляем 1 день)
+                new_dt = new Date(new_dt)                       //переводим дату из миллисекунд в год-месяц-день-...
+                let get_d = new_dt.getDate();                       //возвращаем день
+                let get_m = new_dt.getMonth();                      //возвращаем месяц
+                let get_y = new_dt.getFullYear();                   //возвращаем год
+                return 'следующая дата: ' + get_y + '-' + +(get_m + 1) + '-' + (get_d);
+            }
+        }
+        
+        let date_input_1 = new ExtendedDate('2021-12-31');
+        let date_input_2 = new ExtendedDate('2022-09-01');
+        let date_input_3 = new ExtendedDate('2020-09-01');
+
+        date_input_1.dateDisplayInText();
+        date_input_2.dateDisplayInText();
+        console.log('');
+
+        console.log(date_input_1.pastOrFutureDate());
+        console.log(date_input_2.pastOrFutureDate());
+        console.log(date_input_3.pastOrFutureDate());
+        console.log('');
+
+        console.log(date_input_1.leapYear());
+        console.log(date_input_2.leapYear());
+        console.log(date_input_3.leapYear());
+        console.log('');
+
+        console.log(date_input_1.nextDate());
+        console.log(date_input_2.nextDate());
+        console.log(date_input_3.nextDate());
+    </script>
+   
+    <!-- Задание 3
+    Реализовать класс Employee, описывающий работника, и создать массив работников банка.
+    Реализовать класс EmpTable для генерации html кода таблицы со списком работников банка. Массив работников необходимо
+    передавать через конструктор, а получать html код с помощью метода getHtml().
+    Создать объект класса EmpTable и вывести на экран результат работы метода getHtml().     -->
+
+    <script>  
+    document.writeln('задание 3')
+
+    const employee = [];                                                                            //создали пустой массив employee
+    class Employee {
+        constructor(firstname, lastname, birthday, profession, experience) {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.birthday = birthday;
+            this.profession = profession;
+            this.experience = experience;            
+        }  
+        getArr() {
+            let arr = [this.firstname, this.lastname, this.birthday, this.profession, this.experience];
+            let arr_to_string = (`<td>${this.firstname}</td> <td>${this.lastname}</td> <td>${this.birthday}</td> <td>${this.profession}</td> <td>${this.experience}</td>`)
+            return arr_to_string;
+        }   
+    }
+
+    let johnSmith = new Employee ('John', 'Smith', '25.11.1982', 'manager', '4 years');
+    let mirandaSmith = new Employee ('Miranda', 'Smith', '15.10.1984', 'cashier', '2 years');
+    let bobThompson = new Employee ('Bob', 'Thompson', '12.10.1971', 'security', '12 years');  
+
+    employee.push(johnSmith.getArr());                                                                       //добавляем работников в массив employee
+    employee.push(mirandaSmith.getArr());
+    employee.push(bobThompson.getArr());
+    console.log(employee);
+    
+    
+    class EmpTable {
+        constructor (employee) {
+            this.employee = employee;
+        }
+        getHtml() {
+            document.writeln('<table>');
+            document.writeln('<tr> <th>Имя</th> <th>Фамилия</th> <th>День рождения</th> <th>Профессия</th> <th>Опыт работы</th> </tr>')
+            this.employee.forEach(element => { 
+                document.writeln('<tr>' + element + '</tr>')
+            }); 
+            document.writeln('</table>');      
+        }
+    }
+    let table = new EmpTable(employee);
+    table.getHtml();
+    
+
+    // Задание 4
+    // Реализовать класс StyledEmpTable, который наследуется от класса EmpTable. Добавить метод getStyles(), который 
+    // возвращает строку со стилями для таблицы в тегах style. Переопределить метод getHtml(), который добавляет стили к 
+    // тому, что возвращает метод getHtml() из родительского класса.
+    // Создать объект класса StyledEmpTable и вывести на экран результат работы метода getHtml(). 
+    document.writeln('задание 4')
+  
+        class StyledEmpTable extends EmpTable {
+            constructor(employee) {
+                super(employee);
+            }
+            
+            getStyles() {
+                document.writeln(
+                    '<style>' +
+                    '.table{border-collapse: collapse; border: 1px solid black; margin: 5px;}' + 
+                    '.tr{border: 2px solid black;}' +
+                    '.th{ background-color: coral; padding: 5px;} '+
+                    'td{text-align: center; padding: 5px}' +
+                    '</style>'
+                );                                                
+            }
+            
+            getHtml() {
+                let background_color = Math.round(255*Math.random()) + ',' + Math.round(255*Math.random()) + ',' + Math.round(255*Math.random());
+                document.writeln('<table class="table">');
+                document.writeln('<tr class="tr"> <th class="th">Имя</th> <th class="th">Фамилия</th> <th class="th">День рождения</th> <th class="th">Профессия</th> <th class="th">Опыт работы</th> </tr>');             
+                                  
+                this.employee.forEach(element => {   
+                    document.writeln('<tr class="tr">' + element + '</tr>');
+                }); 
+                
+            document.writeln('</table>');      
+            }
+        }
+        console.log(employee);
+        let table_1 = new StyledEmpTable(employee);
+        table_1.getHtml();
+        console.log(table_1.getStyles()); 
+    </script>
+  
+</body>
+</html>
